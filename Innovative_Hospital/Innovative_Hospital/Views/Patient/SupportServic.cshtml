@@ -1,0 +1,20 @@
+﻿@model List<Message>
+
+@{
+    ViewBag.Title = "Chat";
+}
+
+<h2>Short This</h2>
+
+<div>
+    <div id="chat-box" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 5px;">
+        @foreach (var message in Model)
+        {
+            <p> @message.Text</p>
+        }
+    </div>
+    <form asp-action="SendMessage" asp-controller="Patient" method="post">
+        @Html.TextBox("message", null, new { style = "width: 100%;" })
+        <input type="submit" value="Send" />
+    </form>
+</div>

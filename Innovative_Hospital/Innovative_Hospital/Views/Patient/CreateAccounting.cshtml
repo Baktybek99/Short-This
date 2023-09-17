@@ -1,0 +1,98 @@
+﻿@model Innovative_Hospital_BLL.ViewModels.PatientViewModels.RegistrationPatientVM
+
+<h4>Поставить пациента на учет</h4>
+<hr />
+<form asp-action="CreateAccounting">    
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3">
+            <input value=@Model.PatientId name="PatientId" type="hidden" />
+            <input type="hidden" name="ImagePath" value=@Model.ImagePath />
+            <input type="hidden" name="MedicalCardId" value=@Model.MedicalCardId />
+        </div>
+        <div class="mb-lg-2">
+            <label class="form-label">Фото пациента</label>
+            <img src=@Model.ImagePath style="width:150px; height:150px " />
+        </div>
+        <div class="mb-3">
+            <label asp-for="FullNamePatient" class="form-label"></label>
+            <input asp-for="FullNamePatient" class="form-control" value=@Model.FullNamePatient />
+            <span asp-validation-for="FullNamePatient" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DepartamentId" class="form-label"></label>
+            <select asp-for="DepartamentId" asp-items=@ViewBag.listDepartaments  id="departamentId" class="form-select">
+                <option value="0">ничего не выбрано</option>
+            </select>
+            <span asp-validation-for="DepartamentId" class="text-danger"></span>
+        </div>
+        <button class="btn btn-primary" type="button" disabled style="display:none" id="spinner">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+        <div class="form-group" id="DoctorAndRoom">
+        </div>
+        <div class="mb-3">
+            <label asp-for="ArrivalDate" class="form-label"></label>
+            <input asp-for="ArrivalDate"  class="form-control" />
+            <span asp-validation-for="ArrivalDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+
+    
+</form>
+
+@section scripts
+    {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            function showFilterUsersForm() {
+                $("#spinner").show();
+                $("#DoctorAndRoom").hide();
+            }
+
+            function hideFilterUsersForm() {
+                $("#spinner").hide();
+                $("#DoctorAndRoom").show();
+
+            }
+            $("#departamentId").click(function (e) {
+                $("#spinner").is(":visible")
+                    ? hideFilterUsersForm()
+                    : showFilterUsersForm();
+            })
+
+
+            $("#departamentId").change(function (e) {
+                e.preventDefault();
+                let datas = $(this).find(":selected").val();
+                let url = `/Patient/GetDoctorAndRoom?departamentId=${datas}`;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    beforeSend: showFilterUsersForm,
+                    complete: hideFilterUsersForm,
+                    error: function () {
+                        alert("Could not get doctor and room");
+                    },
+                    success: function (result) {
+                        $("#DoctorAndRoom").html(result);
+                        $("#doctorLists").change(function (e) {
+                            e.preventDefault();
+                            let datas = $(this).find(":selected");
+                            let imagePath = datas.attr("data-thumbnail");
+                            $('#DoctorPhoto').attr('src', imagePath).show();
+                        });
+                    }
+                })
+            });
+       
+        })
+    </script>
+}

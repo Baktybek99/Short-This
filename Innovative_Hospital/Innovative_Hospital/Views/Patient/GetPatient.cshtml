@@ -1,0 +1,93 @@
+﻿@model IEnumerable<PatientsNotFullInfoVM>
+@if (CheckIsRole._IsRoleRegister)
+{
+    <div>
+        <a asp-controller="Patient" asp-action="Create" class="btn btn-info">Создать нового пациента</a>
+    </div>
+    <br />
+}
+@if (Model.Count() > 0)
+{
+    <h4>Поис по ФИО пациента</h4>
+    <input class="w3-input w3-border w3-padding" type="text" placeholder="Поиск по ФИО пациента" id="myInput" onkeyup="myFunction()">
+
+
+    <table class="table" id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImagePath)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfBirth)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfRegistration)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsInTheHospital)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><img src=@item.ImagePath style="width:50px; height:50px " class="rounded-circle" /></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfBirth)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfRegistration)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsInTheHospital)
+                    </td>
+                    <td>
+                        @if (CheckIsRole._IsRoleRegister)
+                        {
+                            @Html.ActionLink("Поставить на учет", "CreateAccounting", "Patient", new { patientId = item.Id, fullName = item.FullName, imagePath = item.ImagePath, medicalCardId = item.MedicalCardId })
+                        }
+                        <a href="~/Patient/GetMedicalCard?id=@item.MedicalCardId&patientId=@item.Id">МедКарта</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+}
+else
+{
+    <div class="col-md-8 noth see"></div>
+}
+
+
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+

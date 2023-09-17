@@ -1,0 +1,69 @@
+﻿
+@model LoginViewModel
+@{
+    Layout = null;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+
+<style>
+    body {
+        background: url("https://www.buenobrandao.adv.br/wp-content/uploads/2022/03/medico-pode-cobrar-por-fora-do-plano-de-saude-870x500.jpg");
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center center;
+        background-color: lightblue;
+        background-blend-mode: multiply;
+    }
+
+    .btn-login {
+        font-size: 0.9rem;
+        letter-spacing: 0.05rem;
+        padding: 0.75rem 1rem;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card border-0 shadow-lg rounded-3 my-5">
+                    <div class="card-body p-4 p-sm-5">
+                        <h2 class="card-title text-center mb-5 ">Добро пожаловать в IHospital!</h2>
+                        <form asp-action="Login">
+                            <div class="form-floating mb-3">
+                                <input class="form-control item" id="floatingInput" asp-for="Email" required>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <label for="floatingInput">Email</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control item" asp-for="Password" id="floatingPassword" required>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                                <label for="floatingPassword">Пароль</label>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" id="rememberPasswordCheck" asp-for="RememberMe" />
+                                <label class="form-check-label" for="rememberPasswordCheck">
+                                    Запомнить
+                                </label>
+                            </div>
+                            <div class="d-grid">
+                                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">
+                                    Вход в аккаунт
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+
+
+

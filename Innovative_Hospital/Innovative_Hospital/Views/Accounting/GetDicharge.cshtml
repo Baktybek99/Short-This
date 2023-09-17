@@ -1,0 +1,38 @@
+﻿@model Innovative_Hospital_BLL.ViewModels.Discharge.PatientDischargeVM
+
+<div>
+    <h4>Выписка пациента: @Model.FullNamePatient</h4>
+    <hr />
+    <dl class="row">       
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Disease)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Disease)
+        </dd>       
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FullNameDoctor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FullNameDoctor)
+        </dd>
+        <dt class = "col-sm-2" style="background:yellow">
+            @Html.DisplayNameFor(model => model.RecommendationsForDoctor)
+        </dt>
+        <dd class = "col-sm-10" style="background:yellow">
+            @Html.DisplayFor(model => model.RecommendationsForDoctor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ArrivalDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ArrivalDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfDischarge)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfDischarge)
+        </dd>
+    </dl>
+</div>

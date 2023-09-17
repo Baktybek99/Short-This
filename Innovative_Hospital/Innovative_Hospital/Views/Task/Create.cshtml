@@ -1,0 +1,75 @@
+﻿@model Innovative_Hospital_BLL.ViewModels.Tasks.CreateTaskVM
+
+<h4>JuniorTaskVM</h4>
+<hr />
+<div class="container__tasks">
+    <div class="mb-5">
+        <div class="col-md-4">
+            <form asp-action="Create" asp-controller="Task">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-5">
+                    <input asp-for="AccountingId" type="hidden" value=@Model.AccountingId />
+                    <input asp-for="SeniorNurseId" type="hidden" value=@Model.SeniorNurseId />
+                    <input asp-for="Nurses" type="hidden" value=@Model.Nurses />
+                </div>
+                <div class="mb-5">
+                    <label class="control-label">Выберите медсесту</label>
+                    <select name="JuniorNurseId" class="form-select" id="selectNurse">
+                        <option value=@null>Никого не выбрали</option>
+                        @foreach (var item in Model.Nurses)
+                        {
+                            <option value=@item.Id image-path-nurse=@item.ImagePath>@item.FullName</option>
+                        }
+                    </select>
+                    <span asp-validation-for="JuniorNurseId" class="text-danger"></span>
+                </div>
+                <div class="mb-5">
+                    <label asp-for="Task" class="control-label"></label>
+                    <input asp-for="Task" class="form-control" />
+                    <span asp-validation-for="Task" class="text-danger"></span>
+                </div>
+                <div class="mb-5">
+                    <label asp-for="TaskDateTime" class="control-label"></label>
+                    <input asp-for="TaskDateTime" class="form-control" />
+                    <span asp-validation-for="TaskDateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="TaskImage"><h3>Фото медсестры</h3><img src="" id="nursePhoto" alt="Alternate Text" style="width:350px;height:400;" /></div>
+
+</div>
+
+<div>
+    <a asp-action="GetAccounting" asp-controller="Accounting" asp-route-isNurse=@true>Назад</a>
+</div>
+
+@section scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#selectNurse").change(function () {                
+                let datas = $(this).find(":selected");
+                let imagepath = datas.attr("image-path-nurse");
+                console.log(imagepath)
+                if (imagepath == undefined) {
+                    $('#nursePhoto').hide();
+                    $('.TaskImage').hide();
+                }
+                else {
+                    $('#nursePhoto').attr('src', imagepath).show();
+                    $('.TaskImage').show();
+                }
+            })
+
+
+        })
+    </script>
+}

@@ -1,0 +1,138 @@
+﻿@model IEnumerable<JuniorTaskVM>
+
+@if (Model.Count() > 0)
+{
+    <h4>Поис по ФИО пациента</h4>
+    <input class="w3-input w3-border w3-padding" type="text" placeholder="Поиск по ФИО пациента" id="myInput" onkeyup="myFunction()">
+
+
+    <table class="table" id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FullNameJuniorNurse)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DepartamentName)
+                </th>
+                <th >
+                    @Html.DisplayNameFor(model => model.PatientFullName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RoomNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TaskDateTime)
+                </th>
+                <th >
+                    @Html.DisplayNameFor(model => model.Task)
+                </th>
+                <th >
+                    Выполнено
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullNameJuniorNurse)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartamentName)
+                    </td>
+                    <td style="background-color: #AFEEEE;">
+                        @Html.DisplayFor(modelItem => item.PatientFullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaskDateTime)
+                    </td>
+                    <td style="background: #F0E68C">
+                        >
+                        @Html.DisplayFor(modelItem => item.Task)
+                    </td>
+                    @if (item.IsCompleted)
+                    {
+                        <td style="background: #32CD32 ">
+                            @Html.DisplayFor(modelItem => item.IsCompleted)
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="background: #FF4500">
+                            @Html.DisplayFor(modelItem => item.IsCompleted)
+                        </td>
+                    }
+
+                    <td>
+                        @if (CheckIsRole._IsRoleJuniorNurse && item.IsCompleted == false)
+                        {
+                            <a href="~/Task/MarkTaskDone?id=@item.Id">Пометить как сделаное</a>
+                        }
+                        @if (CheckIsRole._IsRoleSeniorNurse)
+                        {
+                            <a href="~/Task/Edit?id=@item.Id" class="text-danger">Изменить</a>
+
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Удалить
+                            </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action="Delete" method="post">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Вы точно хотите удалить задание</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Задание:@item.Task</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="id" value=@item.Id />
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                                <button type="submit" class="btn btn-danger">Удалить</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="col-md-8 noth see"></div>
+}
+
+
+
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Innovative_Hospital_BLL.ViewModels.AdminViewModels.EmployeeInfoVM>
+
+<h3>Меню администратора</h3>
+
+<div class="input-group" id="employeeSearchForm">
+    <div class="form-outline">
+        <input placeholder="Поиск по ФИО/Email" type="search" id="employeeData" class="form-control" autocomplete="off" />
+    </div>
+    <button type="button" class="btn btn-primary">
+        Поиск
+    </button>
+</div>
+
+<div id="employeeList">
+    @await Html.PartialAsync("Search")
+</div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#employeeSearchForm").submit(function (e) {
+                e.preventDefault();
+                let employeeData = $("#employeeData").val();
+                let url = `/Admin/Search?searchText=${employeeData}`
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    error: function (result) {
+                        result.responseText.length > 0
+                            ? alert(result.responseText)
+                            : alert('error');
+                    },
+                    success: function (result) {
+                        $("#customerList").html(result);
+                    }
+                })
+            })
+        })
+    </script>
+}
+
+

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<AccountingVM>
+
+@if (Model.Count() > 0)
+{
+
+    <link href="~/css/list.css" rel="stylesheet" />
+    <div class="listbody">
+        <div class="container">
+            @foreach (var item in Model)
+            {
+                <div class="card">
+                    <div class="card__header">
+                        <img src=@item.ImagePath alt="card__image" class="card__image" width="500">
+                    </div>
+                    <div class="card__body">
+                        <div>
+                            @if (item.Sex == Sex.Man)
+                            {
+                                <span class="tag tag-blue">@item.Sex</span>
+                            }
+                            else
+                            {
+                                <span class="tag tag-orange">@item.Sex</span>
+                            }
+                            @if (item.IsDischarged)
+                            {
+                                <span class="tag tag-disch">Выписан</span>
+                            }
+                        </div>
+                        <h4>ФИО:@item.FullNamePatient</h4>
+                        <p class="card-text">
+                            <strong>ФИО доктора:</strong>@item.FullNameDoctor<br /><strong>Тип крови:</strong>@item.BloodType<br /><strong>Аллергия:</strong>@item.Allergy <br />
+                            <strong>Рабочий телефон:</strong>@item.WorkPhoneNumber<br /><strong>Тип крови:</strong>@item.BloodType<br /><strong>Аллергия:</strong>@item.Allergy <br />
+                            @if (!CheckIsRole._IsRoleDoctor)
+                            {
+
+                                <a href="~/DoctorInstuction/GetFullInstructioInfo?accountingId=@item.Id" class="btn btn-outline-info">Рекомендации врача</a>
+                            }
+                            <a href="~/Patient/GetMedicalCard?id=@item.MedicalCardId&patientId=@item.PatientId" class="btn btn-outline-primary">МедКарта</a>
+                        </p>
+                        <p><small class="text-muted">Дата поставления:@item.ArrivalDate.ToString("dd/MM/yyyy") </small></p>
+                        @if (item.IsDischarged)
+                        {
+                            <p><small class="text-muted">Дата выписки:@item.DateOfDischarge </small></p>
+                        }
+                        <div class="card__footer">
+                            <div class="user">
+
+                                @if (CheckIsRole._IsRoleSeniorNurse)
+                                {
+                                    <a href="~/Task/Create?accountingId=@item.Id">Дать задание медсестре</a> <br />
+                                    <a href="~/Task/GetTasks?isCompleted=false&isSeniorNurse=true&accountingId=@item.Id">Не выполненые задачи</a> <br />
+                                    <a href="~/Task/GetTasks?isCompleted=true&isSeniorNurse=true&accountingId=@item.Id">Выполненые задачи</a>
+                                }
+                                @if (CheckIsRole._IsRoleDoctor && !item.IsDischarged)
+                                {
+                                    <a href="~/DoctorInstuction/GetInstructions?accountingId=@item.Id&patientId=@item.PatientId" class="btn btn-primary">Мои рекомендации</a> <br />
+                                    <a href="~/Accounting/DischargeThePatient?accountingId=@item.Id" class="btn btn-primary">Выписать пациента</a> <br />
+                                }
+                                <br />
+                                @if (CheckIsRole._IsRolePatient)
+                                {
+                                    <a href="~/Task/GetTasks?isPatient=true&accountingId=@item.Id" class="btn btn-primary">Задачи мед.сестрер</a> <br />
+                                }
+                                @if (item.IsDischarged)
+                                {
+                                    <a href="~/Accounting/GetDicharge?accountingId=@item.Id" class="btn btn-primary">Посмотреть выписку врача</a> <br />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-md-8 noth see"></div>
+}

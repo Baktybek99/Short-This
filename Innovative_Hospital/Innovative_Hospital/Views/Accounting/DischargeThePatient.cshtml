@@ -1,0 +1,57 @@
+﻿@model Innovative_Hospital_BLL.ViewModels.Discharge.PatientDischargeVM
+
+<h4>Выписка пациента</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="DischargeThePatient">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="AccountingId" value=@Model.AccountingId />
+                <input type="hidden" asp-for="DoctorId" value=@Model.DoctorId />
+                <input type="hidden" asp-for="FullNameDoctor" value=@Model.FullNameDoctor />
+                <input type="hidden" asp-for="FullNamePatient" value=@Model.FullNamePatient />
+                <input type="hidden" asp-for="PatietEmail" value=@Model.PatietEmail />
+                <input type="hidden" asp-for="ArrivalDate" value=@Model.ArrivalDate/>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullNamePatient" class="control-label"></label>
+                <p class="form-control">@Model.FullNamePatient</p>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullNameDoctor" class="control-label"></label>
+                <p class="form-control">@Model.FullNameDoctor</p>
+            </div>
+            <div class="form-group">
+                <label asp-for="Disease" class="control-label"></label>
+                <input asp-for="Disease" class="form-control" />
+                <span asp-validation-for="Disease" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecommendationsForDoctor" class="control-label"></label>
+                <input asp-for="RecommendationsForDoctor" class="form-control" />
+                <span asp-validation-for="RecommendationsForDoctor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArrivalDate" class="control-label"></label>
+                <p class="form-control">@Model.ArrivalDate</p>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfDischarge" class="control-label"></label>
+                <input asp-for="DateOfDischarge" class="form-control" />
+                <span asp-validation-for="DateOfDischarge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="GetAccounting">Назад</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

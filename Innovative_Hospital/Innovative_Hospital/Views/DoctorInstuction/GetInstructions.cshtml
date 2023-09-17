@@ -1,0 +1,84 @@
+﻿@model IEnumerable<InstructionVM>
+
+@if (CheckIsRole._IsRoleDoctor && Model.Count() > 0)
+{
+    <p>
+        <a href="~/DoctorInstuction/Create?patientId=@Model.First().PatientId&accountingId=@Model.First().AccountingId">Создать новую</a>
+    </p>
+}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Analyzes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Diagnosis)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Treatment)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Analyzes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Diagnosis)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Treatment)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Изменить", "Edit", new { id = item.Id })
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal-@item.Id">
+                            Удалить
+                        </button>
+                        <div class="modal fade" id="deleteModal-@item.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="deleteModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Вы точно хотите удалить инструкцию?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="Delete" method="post">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="id" value=@item.Id />
+                                            <input type="hidden" name="accountingId" value=@item.AccountingId />
+                                            <input type="hidden" name="patientId" value=@item.PatientId />
+                                            <span class="ahah-bro-nicee">Инсрукция доктора</span>
+                                            <span>&nbsp;|&nbsp;</span>
+                                            <span class="ahah-bro-nicee">
+                                                Диагноз: @Html.DisplayFor(modelItem => item.Diagnosis)
+                                            </span>
+                                            <span>&nbsp;|&nbsp;</span>
+                                            <span class="ahah-bro-nicee">
+                                                @Html.DisplayFor(modelItem => item.Treatment)
+                                            </span>
+                                            <span>&nbsp;|&nbsp;</span>
+                                            <span class="ahah-bro-nicee">
+                                                @Html.DisplayFor(modelItem => item.Analyzes)
+                                            </span>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                            <input type="submit" value="Удалить" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

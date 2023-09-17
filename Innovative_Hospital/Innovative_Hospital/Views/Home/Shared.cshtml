@@ -1,0 +1,112 @@
+﻿@{
+    //Layout = "~/Views/Shared/_Layout.cshmtl";
+}
+<p>
+    <div class="row">
+        <div class="col-1">
+            <label><b>Вид графика</b></label>
+        </div>
+        <div class="col-2">
+            <select id="ChartType" class="form-control">
+                <option selected>Выбрать тип графика</option>
+                <option value="bar">Bar</option>
+                <option value="line">Линия</option>
+                <option value="pie">Пирог</option>
+                <option value="doughnut">Пончик</option>
+            </select>
+        </div>
+        <div class="col-4">
+            <input type="button" id="ID" value="Показать" />
+        </div>
+        <div class="col-5">
+            <input type="button" id="Install" value="Скачать" />
+        </div>
+    </div>
+
+</p>
+
+
+<br />
+<div id="ChartView">
+    <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function OnError(err) {
+
+            }
+
+            $("#ID").click(function () {
+                var chartType = $("#ChartType").val();
+
+                var chartView = document.getElementById('ChartView');
+
+                chartView.innerHTML = '&nbsp;';
+
+                $("#ChartView").append('<canvas id="myChart" style="max-height:700px;max-width:350px"></canvas>')
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/GetResult",
+                    data: "",
+                    contentType: "application/json: charset=utf-8",
+                    dataType: "json",
+                    success: OnSuccesResult,
+                    error: OnError
+                })
+
+                function OnSuccesResult(data) {
+                    var _data = data;
+                    var _chartLabels = _data[0];
+                    var _chartData = _data[1];
+
+                    var barColor = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'];
+                    console.log("Середина");
+                    new Chart("myChart", {
+                        type: chartType,
+                        data: {
+                            labels: _chartLabels,
+                            datasets: [{
+                                backgroundColor: barColor,
+                                data: _chartData
+                            }]
+                        }
+                    });
+                    console.log("Type= "+ chartType);
+                }
+
+                
+            })
+
+            $("#Install").click(function () {
+                console.log("Начинаем скачивать");
+                var html = $("#ChartView").html();                
+                //var dataToSend = JSON.stringify({ 'num': html });
+                console.log(html);
+                //var HTML = document.getElementById('ChartView').getContent();
+                //$("ChartView").getContent
+                //var code = JSON.stringify({ 'num': HTML });
+                /*var HTML = escape($("#myChart"    ).val());*/
+                /*console.log(HTML);*/
+                $.ajax({
+                    type: "GET",
+                    url: `/Home/Install?EMPID=${JSON.stringify(html)}`,
+                    //data: { empid: $('#ChartView').val() },
+                    dataType: "text",
+                    success: OnSuccesResult,
+                    error: OnError
+                })
+
+                function OnSuccesResult(data) {
+                    console.log(data)
+                }
+            })
+        })
+    </script>
+}
+

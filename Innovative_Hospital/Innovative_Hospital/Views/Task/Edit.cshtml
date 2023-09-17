@@ -1,0 +1,39 @@
+﻿@model Innovative_Hospital_BLL.ViewModels.Tasks.EditJuniorTaskVM
+
+<h4>Изменить задание</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+            <div class="form-group">
+                <input asp-for="Id" value=@Model.Id type="hidden" />
+                <input type="hidden" asp-for="AccountingId" value=@Model.AccountingId />
+                <label asp-for="Task" class="control-label"></label>
+                <input asp-for="Task" class="form-control" />
+                <span asp-validation-for="Task" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TaskDateTime" class="control-label"></label>
+                <input asp-for="TaskDateTime" class="form-control" />
+                <span asp-validation-for="TaskDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsCompleted" /> @Html.DisplayNameFor(model => model.IsCompleted)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="GetTasks" asp-controller="Task" asp-route-isCompleted=@false>Назад</a>
+</div>  
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

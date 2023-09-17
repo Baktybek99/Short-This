@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Innovative_Hospital_BLL.ViewModels.DoctorInstructions.InstuctionFullInfoVM>
+
+@if (Model.Count() > 0)
+{
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FullNameDoctor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DepartamentName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FullNamePatient)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Analyzes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Diagnosis)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Treatment)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullNameDoctor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartamentName)
+                    </td>
+                    <td style="background-color: #AFEEEE; ">
+                        @Html.DisplayFor(modelItem => item.FullNamePatient)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Analyzes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Diagnosis)
+                    </td>
+                    <td style="background-color: #F0E68C;">
+                        @Html.DisplayFor(modelItem => item.Treatment)
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="col-md-8 noth see"></div>
+}
+

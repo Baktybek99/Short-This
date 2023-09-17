@@ -1,0 +1,239 @@
+﻿
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    .header-image {
+        background: url("https://kartinkin.net/uploads/posts/2022-03/thumbs/1646694922_66-kartinkin-net-p-kartinki-vrachei-dlya-prezentatsii-67.jpg") no-repeat;
+        background-blend-mode: multiply;
+        background-color: gray;
+        background-size: cover;
+        height: 600px;
+    }
+
+    .page-caption {
+        padding-top: 200px;
+        padding-bottom: 150px;
+    }
+
+    .page-title {
+        font-size: 46px;
+        line-height: 1;
+        color: #fff;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .card-section {
+        position: relative;
+        bottom: 60px;
+    }
+
+    .card-block {
+    }
+
+    .section-title {
+        position: relative;
+        padding: 40px;
+        margin-bottom: 50px;
+    }
+
+    .btn {
+        border-radius: 20px;
+    }
+</style>
+<div class="header-image">
+    <div class="container">
+        <div class="row text-white">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-caption">
+                    @*Вход временный с Админа и Регистратуры для экономии времени на презентации*@
+                    @if (User.IsInRole(RoleInitializer.roleAdmin))
+                    {
+                        <h1>Добро пожаловать,<br /> Уважаемый Админ!</h1>
+                        <p>Управляйте персоналом, отделениями больницы!</p>
+                        <br />
+                        <a href="#" class="btn btn-lg btn-primary text-uppercase fw-bold">Сотрудники</a> 
+                    }
+                    @if (User.IsInRole(RoleInitializer.roleRegistry))
+                    {
+                        <h1>Добро пожаловать,<br /> Уважаемая Регистратура !</h1>
+                        <p>Вы отвечаете за создание аккаунт пациентам!</p>
+                        <br />
+                        <a href="~/Patient/Create" class="btn btn-lg btn-primary text-uppercase fw-bold"> Создать аккаунт пациенту</a>                      
+                    }
+                    @if (User.IsInRole(RoleInitializer.roleDoctor))
+                    {
+                        <h1>Добро пожаловать,<br /> Уважаемый Доктор!</h1>
+                        <p>
+                            Здесь Вы сможете следить за своими пациентами, назначать им лечение и выписывать.<br />
+                            Выберите в меню панели действие или получите список своих пациентов по ссылке
+                        </p>
+                        <br />
+                        <a href="~/Accounting/GetAccounting" class="button btn btn-success text-uppercase fw-bold ">Мои пациенты</a>
+                    }
+
+                    @if (User.IsInRole(RoleInitializer.rolePatient))
+                    {
+                        <h1>Добро пожаловать,<br /> Уважаемый Пациент!</h1>
+                        <p>
+                            Здесь Вы сможете следить за своим лечением. Видеть свои назначения от Доктора.<br />
+                            Также Вам доступна мед.карта и история болезней.
+                        </p>
+                        <br />
+                        <button class="btn btn-lg btn-primary text-uppercase fw-bold">
+                            Мед.Карта
+                        </button>
+                        <button class="btn btn-lg btn-success text-uppercase fw-bold">
+                            Мои назначения
+                        </button>
+                    }
+
+                    @if (User.IsInRole(RoleInitializer.roleSeniorNurse))
+                    {
+                        <h1>Добро пожаловать,<br /> Уважаемая Старшая Медсестра!</h1>
+                        <p>
+                            Здесь Вы можете получить информацию о пациентах в отделении, <br />назначениях Докторов
+                            и раздавать задания младшим медсестрам.
+                        </p>
+                        <br />
+                        <a href="~/Task/GetTasks?isCompleted=false&isSeniorNurse=true" class="button btn btn-danger">Список не выполненых заданий</a>
+                        <a href="~/Accounting/GetAccounting?isNurse=true" class="button btn btn-success">Список пациентов</a>
+                    }
+
+                    @if (User.IsInRole(RoleInitializer.roleJuniorNurse))
+                    {
+                        <h1>Добро пожаловать, <br /> Уважаемая Младшая Медсестра!</h1>
+                        <p>Здесь Вы можете получать и выполнять свои задания. </p>
+                        <br />
+                        <a href="~/Task/GetTasks?isCompleted=false" class="button btn btn-success text-uppercase fw-bold ">Мои задания</a>
+                    }
+                </div>
+                }
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Doctor"))
+                {
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 font-weight-bold">Добро пожаловать, Уважаемый Доктор!</h1>
+                        <p class="font-italic mb-0">
+                            Здесь Вы сможете следить за своими пациентами, назначать им лечение и выписывать.
+                            Выберите в меню панели действие или получите список своих пациентов по ссылке
+                        </p>
+                        <br />
+                        <a href="~/Accounting/GetAccounting" class="button btn btn-success text-uppercase fw-bold ">Мои пациенты</a>
+                    </div>
+                }
+
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Patient"))
+                {
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 font-weight-bold">Добро пожаловать, Уважаемый Пациент!</h1>
+                        <p class="font-italic mb-0">
+                            Здесь Вы сможете следить за своим лечением. Видеть свои назначения от Доктора.
+                            Также Вам доступна мед.карта и история болезней.
+                        </p>
+                        <br />
+                        <a href="~/Patient/GetMedicalCard?patientId=@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" class="btn btn-success text-uppercase fw-bold">Мед.Карта</a>
+                        <a href="~/Accounting/GetAccounting?isPatient=true&isDischarged=true" class="btn btn-warning text-uppercase fw-bold">История учетов</a>
+                    </div>
+                }
+
+                @if (User.Identity.IsAuthenticated && User.IsInRole("SeniorNurse"))
+                {
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 font-weight-bold">Добро пожаловать, Уважаемая Старшая Медсестра!</h1>
+                        <p class="font-italic mb-0">
+                            Здесь Вы можете получить информацию о пациентах в отделении, назначениях Докторов
+                            и раздавать задания младшим медсестрам.
+                        </p>
+                        <br />
+                        <a href="~/Task/GetTasks?isCompleted=false&isSeniorNurse=true" class="button btn btn-danger">Список не выполненых заданий</a>
+                        <a href="~/Accounting/GetAccounting?isNurse=true" class="button btn btn-success">Список пациентов</a>
+                    </div>
+                }
+
+                @if (User.Identity.IsAuthenticated && User.IsInRole("JuniorNurse"))
+                {
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 font-weight-bold">Добро пожаловать, Уважаемая Младшая Медсестра!</h1>
+                        <p class="font-italic mb-0">
+                            Здесь Вы можете получать и выполнять свои задания.
+                        </p>
+                        <br />
+                        <a href="~/Task/GetTasks?isCompleted=false" class="button btn btn-success text-uppercase fw-bold ">Мои задания</a>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="card-section">
+    <div class="container">
+        <div class="card-block text-white  mb30">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 bg-info ">
+                    <div class="section-title mb-0">
+                        <h3>Контакты</h3>
+                        <br />
+                        <h5>+996(312) 64-45-09</h5>
+                        <p>Приемное отделение</p>
+                        <h5>+996(312) 64-45-09</h5>
+                        <p>Приемная гл.врача</p>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 bg-primary bg-gradient">
+                    <div class="section-title mb-0">
+                        <h3>Режим работы</h3>
+                        <br />
+                        <p>ПН-ВС</p>
+                        <p>Круглосуточно</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center" style="position:relative; padding:60px; margin-bottom:10px">
+                <h6 class="text-primary"> С заботой о пациентах и сотрудниках больницы</h6>
+                <p>От разработчиков Б.Жумабекова и Н.Маатказиевой</p>
+            </div>
+            <br />
+            <br />
+            <br />
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@*<div class="card-section">
+        <div class="container">
+            <div class="card-block mb30 text-white">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 bg-info">
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center text-primary">
+                    С заботой о пациентах и сотрудниках больниц.
+                </div>
+            </div>
+        </div>
+    </div>*@
+

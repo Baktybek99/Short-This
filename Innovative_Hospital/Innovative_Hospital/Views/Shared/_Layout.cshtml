@@ -1,0 +1,115 @@
+﻿@{
+    var currentUser = this.User.Identity.Name;
+    CheckIsRole._IsRoleAdmin = User.IsInRole(RoleInitializer.roleAdmin);
+    CheckIsRole._IsRoleRegister = User.IsInRole(RoleInitializer.roleRegistry);
+    CheckIsRole._IsRoleDoctor = User.IsInRole(RoleInitializer.roleDoctor);
+    CheckIsRole._IsRoleJuniorNurse = User.IsInRole(RoleInitializer.roleJuniorNurse);
+    CheckIsRole._IsRoleSeniorNurse = User.IsInRole(RoleInitializer.roleSeniorNurse);
+    CheckIsRole._IsRolePatient = User.IsInRole(RoleInitializer.rolePatient);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Innovative_Hospital</title>
+    <link rel="icon" href="~/Files/IHospital.jpg">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/sidebar.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</head>
+<body id="body-pd">
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+        <div class="userLogin">@currentUser </div>
+        <div class="header_img">
+            <img src="~/files/ihospital.jpg" style="float:right;">
+            <p>IHospital</p>
+        </div>
+    </header>
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav">
+            <div>
+                <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">InnovativeHospital</span> </a>
+                <div class="nav_list">
+                    <a href="~/Home/Index" class="nav_link"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Домашняя страница</span> </a>
+                    <a href="~/Home/Shared" class="nav_link"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">График</span> </a>
+                    @if (CheckIsRole._IsRoleRegister)
+                    {
+                        <p class="text-white text-center">Админ</p>
+                        <a href="~/Admin/GetAllEmployees" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Сотрудники</span> </a>
+                        <a href="~/Admin/GetAllDepartments" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Отделения</span> </a>
+                        <p class="text-white text-center">Регистратура</p>
+                        <a href="~/Patient/Create" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Создать аккаунт пациенту</span> </a>
+                    }
+                    @if (CheckIsRole._IsRoleAdmin)
+                    {
+                        <a href="~/Admin/GetAllEmployees" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Сотрудники</span> </a>
+                        <a href="~/Admin/GetAllDepartments" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Отделения</span> </a>
+                    }
+                    @if (CheckIsRole._IsRoleDoctor)
+                    {
+                        <a href="~/Accounting/GetAccounting" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Увидеть список своих пациентов</span> </a>
+                        <a href="~/Accounting/GetAccounting?isDischarged=true" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Кого я лечил</span> </a>
+
+                    }@if (CheckIsRole._IsRoleJuniorNurse)
+                    {
+                        <a href="~/Task/GetTasks?isCompleted=false" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Не сделаные Задачи</span> </a>
+                        <a href="~/Task/GetTasks" class="nav_link"> <i class='bx bx-band-aid nav_icon'></i> <span class="nav_name">Выплненые Задачи</span> </a>
+
+                    }@if (CheckIsRole._IsRoleSeniorNurse)
+                    {
+                        <a href="~/Accounting/GetAccounting?isNurse=true" class="nav_link"> <i class='bx bx-accessibility nav_icon'></i> <span class="nav_name">Паценты на учете</span> </a>
+                        <a href="~/Task/GetTasks?isCompleted=false&isSeniorNurse=true" class="nav_link"> <i class='bx bx-band-aid nav_icon'></i> <span class="nav_name">Не выполненые задачки</span> </a>
+                        <a href="~/Task/GetTasks?isSeniorNurse=true" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Выполненые задачк</span> </a>
+                    }
+                    @if (!CheckIsRole._IsRolePatient && !CheckIsRole._IsRoleDoctor && CheckIsRole._IsRoleRegister)
+                    {
+
+                        <a href="~/Accounting/GetAccounting?IsRegistry=true" class="nav_link"> <i class='bx bx-accessibility nav_icon'></i> <span class="nav_name">Пациенты на учете</span> </a>
+                        <a href="~/Patient/GetPatient?" class="nav_link"> <i class='bx bx-angry nav_icon'></i> <span class="nav_name">Пациенты</span> </a>
+
+                    }
+                    @if (CheckIsRole._IsRolePatient)
+                    {
+                        <a href="~/Accounting/GetAccounting?isPatient=true&isDischarged=true" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">История учетов</span> </a>
+                        <a href="~/Accounting/GetCurrentAccounting?isPatient=true&isDischarged=false" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Текущий учет</span> </a>
+                    }
+                    <a href="~/Account/ChangePassword" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Поменять пароль</span> </a>
+                    <a href="~/Patient/SupportServic" class="nav_link"> <i class='bx bx-angry nav_icon'></i> <span class="nav_name">Служба поддержки</span> </a>
+                </div>
+            </div>
+            <a href="~/Account/Logout" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Выйти</span> </a>
+        </nav>
+    </div>
+    <!--Container Main start-->
+    <div class="height-100 bg-light">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        @RenderBody()
+    </div>
+    <!--Container Main end-->
+
+    <environment include="Development">
+        <script src="~/jquery.selection/jquery.selection.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script src="~/jquery.selection/jquery.selection.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    </environment>
+
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
